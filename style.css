@@ -1,0 +1,131 @@
+/* Reset some defaults */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Basic body styling */
+body {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.section-title {
+    font-family: 'League Spartan', sans-serif;
+}
+
+
+/* Header */
+header {
+    background-color: #1e1e2f;
+    color: #fff;
+    text-align: left;
+    padding: 1rem;
+    padding-left: 3rem;
+    font-family: 'Salsico', serif;
+    font-size: 1.8rem;
+}
+
+/* Container to align logo and heading horizontally */
+.header-container {
+    display: flex;
+    align-items: center;   /* vertically center logo and text */
+    justify-content: center; /* center in header horizontally */
+}
+
+/* Logo size */
+.logo {
+    padding-top: 10px;
+    width: 170px;      /* adjust width */
+    height: auto;     /* keeps aspect ratio */
+}
+
+/* Main layout */
+main {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* Song list */
+.song-list {
+    flex: 1;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.song-list input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.song-list ul {
+    list-style: none;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.song-list li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.song-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.song-list button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+/* Song details form */
+.song-details {
+    flex: 2;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.song-details form {
+    display: flex;
+    flex-direction: column;
+}
+
+.song-details label {
+    margin-top: 0.8rem;
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+}
+
+.song-details input,
+.song-details textarea {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.song-details button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+#cancelBtn {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+}
+
+#cancelBtn:hover {
+    opacity: 0.9;
+}
