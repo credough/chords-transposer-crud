@@ -7,9 +7,15 @@
 }
 
 body {
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: #0f1115;
+    color: #e6e8ee;
 }
+
+.section-title {
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
 
 /* SECTION TITLES */
 .section-title {
@@ -24,8 +30,8 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background: #1e1e2f;
-    border-bottom: 1px solid #333;
+    background: #12141a;
+    border-bottom: 1px solid #242834;
 }
 
 /* LOGO + TITLE */
@@ -36,14 +42,14 @@ body {
 }
 
 .logo {
-    width: 150px;
+    width: 130px;
     height: auto;
 }
 
 .brand {
     font-family: 'League Spartan', sans-serif;
     font-size: 28px;
-    color: #fff;
+    color: #ffffff;
     letter-spacing: 1px;
 }
 
@@ -57,7 +63,7 @@ body {
 .nav-links a {
     text-decoration: none;
     font-size: 16px;
-    color: #ddd;
+    color: #9aa0b3;
     font-weight: 300;
     transition: 0.2s ease;
     padding-left: 1rem;
@@ -65,7 +71,7 @@ body {
 }
 
 .nav-links a:hover {
-    color: #7a5af8;
+    color: #ffffff;
 }
 
 /* GENERAL MAIN LAYOUT */
@@ -78,10 +84,11 @@ main {
 /* SONG LIST SECTION */
 .song-list {
     flex: 1;
-    background-color: #fff;
+    background-color: #171a21;
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: none;
+    border: 1px solid #242834;
 }
 
 .song-list input {
@@ -115,10 +122,11 @@ main {
 /* SONG DETAILS SECTION */
 .song-details {
     flex: 2;
-    background-color: #fff;
+    background-color: #171a21;
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: none;
+    border: 1px solid #242834;
 }
 
 .song-details form {
@@ -130,6 +138,8 @@ main {
     margin-top: 0.8rem;
     margin-bottom: 0.3rem;
     font-weight: bold;
+    color: #9aa0b3;
+    font-weight: 500;
 }
 
 .song-details input,
@@ -148,11 +158,52 @@ main {
 
 /* CANCEL BUTTON */
 #cancelBtn {
-    background-color: #f44336;
-    color: #fff;
-    border: none;
+    background-color: #2a1e1e;
+    color: #ff6b6b;
+    border: 1px solid #3a2323;
 }
 
 #cancelBtn:hover {
     opacity: 0.9;
+    background-color: #3a2323;
+}
+
+/* MODERN INPUTS */
+.song-details input,
+.song-details textarea,
+.song-list input {
+    background-color: #12141a;
+    border: 1px solid #242834;
+    color: #e6e8ee;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.song-details input::placeholder,
+.song-details textarea::placeholder,
+.song-list input::placeholder {
+    color: #6f7485;
+}
+
+.song-details input:focus,
+.song-details textarea:focus,
+.song-list input:focus {
+    outline: none;
+    border-color: #5b7cfa;
+    box-shadow: 0 0 0 4px rgba(91,124,250,0.2);
+    background-color: #12141a;
+}
+
+
+/* TEXTAREA RESIZE CONTROL */
+.song-details textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+#chords {
+    font-family: "Fira Code", monospace;
+    letter-spacing: 0.5px;
 }
