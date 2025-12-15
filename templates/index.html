@@ -6,9 +6,9 @@
     <title>iChords</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../static/style.css">
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 </head>
@@ -32,7 +32,7 @@
     <!-- MAIN CONTENT -->
     <main>
         <!-- SONG LIST SECTION -->
-        <section class="song-list" id="songs">
+        <section class="song-list">
             <h2 class="section-title">Song List</h2>
 
             <input type="text" id="search" placeholder="Search songs...">
@@ -52,10 +52,18 @@
                 <input type="text" id="title" required>
 
                 <label for="chords">Chords</label>
+                <div class="chord-editor">
+                <pre id="chordPreview"></pre>
                 <textarea id="chords" rows="4"></textarea>
+                </div>
 
-                <label for="lyrics">Lyrics</label>
-                <textarea id="lyrics" rows="6"></textarea>
+
+                <div class="transpose-controls">
+                <button type="button" id="transposeDown">-</button>
+                <span id="currentKey">Key: C</span>
+                <button type="button" id="transposeUp">+</button>
+                </div>
+
 
                 <button type="submit">Save</button>
                 <button type="button" id="cancelBtn">Cancel</button>
@@ -63,7 +71,7 @@
         </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="../static/app.js"></script>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
 </body>

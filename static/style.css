@@ -207,3 +207,62 @@ main {
     font-family: "Fira Code", monospace;
     letter-spacing: 0.5px;
 }
+
+/* TRANSPOSE CONTROLS */
+.transpose-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 1rem;
+}
+
+.transpose-controls button {
+    background-color: #1f2330;
+    border: 1px solid #242834;
+    color: #e6e8ee;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.transpose-controls button:hover {
+    background-color: #2a2f42;
+}
+
+#currentKey {
+    font-size: 14px;
+    color: #9aa0b3;
+    padding-top: 1rem;
+}
+
+.song-list li.active {
+  background-color: #2a2f42;
+  color: #fff;
+}
+.chord-editor {
+  position: relative;
+}
+
+#chordPreview,
+#chords {
+  font-family: "Fira Code", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 12px 14px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+#chordPreview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: transparent;
+  pointer-events: none;
+}
+
+#chords {
+  position: relative;
+  background: transparent;
+}
