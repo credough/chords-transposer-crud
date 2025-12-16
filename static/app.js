@@ -174,17 +174,42 @@ songForm.addEventListener("submit", e => {
   renderSongList();
 });
 
-function renderSongList() {
+/*----SEARCH SONG-----*/
+const searchInput = document.getElementById("search");
+
+function renderSongList(filter = "") {
   songListEl.innerHTML = "";
 
+  const query = filter.toLowerCase();
+
   songs.forEach((song, index) => {
+    if (!song.title.toLowerCase().includes(query)) return;
+
     const li = document.createElement("li");
     li.textContent = song.title;
-    if (index === selectedSongIndex) li.classList.add("active");
+
+    if (index === selectedSongIndex) {
+      li.classList.add("active");
+    }
+
     li.onclick = () => loadSong(index);
     songListEl.appendChild(li);
   });
+  if (!songListEl.children.length) {
+  const li = document.createElement("li");
+  li.textContent = "No songs found";
+  li.style.opacity = "0.6";
+  li.style.pointerEvents = "none";
+  songListEl.appendChild(li);
 }
+
+}
+
+searchInput.addEventListener("input", () => {
+  renderSongList(searchInput.value);
+});
+
+
 
 function loadSong(index) {
   selectedSongIndex = index;
@@ -227,3 +252,64 @@ chordsInput.addEventListener("input", () => {
 ===================== */
 renderSongList();
 updateKeyDisplay();
+
+
+/* =====================
+   DELETE SONG
+===================== */
+
+const deleteBtn = document.getElementById("deleteBtn");
+const duplicateBtn = document.getElementById("duplicateBtn");
+
+deleteBtn.addEventListener("click", () => {
+  if (selectedSongIndex === null) return;
+
+  const confirmDelete = confirm(
+    `Delete "${songs[selectedSongIndex].title}"?`
+  );
+
+  if (!confirmDelete) return;
+
+  songs.splice(selectedSongIndex, 1);
+  localStorage.setItem("songs", JSON.stringify(songs));
+
+  resetForm();
+});
+
+
+
+/* =====================
+   DUPLICATE SONG
+===================== */
+
+duplicateBtn.addEventListener("click", () => {
+  if (selectedSongIndex === null) return;
+
+  const original = songs[selectedSongIndex];
+
+  const copy = {
+    title: original.title + " (Copy)",
+    chords: original.chords
+  };
+
+  songs.splice(selectedSongIndex + 1, 0, copy);
+  localStorage.setItem("songs", JSON.stringify(songs));
+
+  renderSongList();
+});
+
+function updateActionButtons() {
+  const enabled = selectedSongIndex !== null;
+  deleteBtn.disabled = !enabled;
+  duplicateBtn.disabled = !enabled;
+}
+
+/*----ADD SONG-----*/
+const addSongBtn = document.getElementById("addSongBtn");
+
+addSongBtn.addEventListener("click", () => {
+  resetForm();
+  titleInput.focus();
+});
+
+

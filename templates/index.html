@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iChords</title>
-
+    <link rel="icon" href="design/favicon2.png" type="image/x-icon">
     <!-- Fonts -->
     <link href="style.css" rel="stylesheet">
     
@@ -33,7 +33,7 @@
     <main>
         <!-- SONG LIST SECTION -->
         <section class="song-list">
-            <h2 class="section-title">Song List</h2>
+            <h2 class="section-title">Songs</h2>
 
             <input type="text" id="search" placeholder="Search songs...">
 
@@ -54,7 +54,7 @@
                 <label for="chords">Chords</label>
                 <div class="chord-editor">
                 <pre id="chordPreview"></pre>
-                <textarea id="chords" rows="4"></textarea>
+                <textarea id="chords" rows="10"></textarea>
                 </div>
 
 
@@ -65,8 +65,19 @@
                 </div>
 
 
-                <button type="submit">Save</button>
+                <div class="song-actions">
+
+                <div class="song-actions-top">
+                <button type="button" id="duplicateBtn">Duplicate</button>
+                <button type="button" id="deleteBtn">Delete</button>
+                </div>
+
+                <div class="song-actions-bottom">
                 <button type="button" id="cancelBtn">Cancel</button>
+                <button type="submit" id="saveBtn">Save</button>
+                </div>
+
+                </div>
             </form>
         </section>
     </main>
