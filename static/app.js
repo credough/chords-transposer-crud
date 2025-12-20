@@ -1,11 +1,4 @@
 /* =====================
-   iChords – Advanced app.js
-   ✔ Sharp + flat support
-   ✔ Automatic key detection
-   ✔ Chord highlighting
-===================== */
-
-/* =====================
    GLOBAL STATE
 ===================== */
 
@@ -14,6 +7,8 @@ let selectedSongIndex = null;
 let currentTranspose = 0;
 let originalChords = "";
 let detectedKey = "C";
+let isApplyingTranspose = false;
+
 
 /* =====================
    DOM ELEMENTS
@@ -45,22 +40,7 @@ const NOTE_INDEX = {
 };
 
 /* =====================
-   PARSER
-===================== */
-
-function parseChord(chord) {
-  const match = chord.match(/^([A-G](?:#|b)?)(m|maj7|m7|7|sus4|dim)?(.*)$/);
-  if (!match) return null;
-
-  return {
-    root: match[1],
-    quality: match[2] || "",
-    extra: match[3] || ""
-  };
-}
-
-/* =====================
-   TRANSPOSER (slash-chord aware)
+   TRANSPOSER
 ===================== */
 
 function parseChord(chord) {
@@ -142,17 +122,24 @@ function updateKeyDisplay() {
 
 transposeUpBtn.addEventListener("click", () => {
   if (!originalChords) return;
+
+  isApplyingTranspose = true;
   currentTranspose++;
   chordsInput.value = transposeText(originalChords, currentTranspose);
   updateKeyDisplay();
+  isApplyingTranspose = false;
 });
 
 transposeDownBtn.addEventListener("click", () => {
   if (!originalChords) return;
+
+  isApplyingTranspose = true;
   currentTranspose--;
   chordsInput.value = transposeText(originalChords, currentTranspose);
   updateKeyDisplay();
+  isApplyingTranspose = false;
 });
+
 
 /* =====================
    CRUD
@@ -162,9 +149,10 @@ songForm.addEventListener("submit", e => {
   e.preventDefault();
 
   const songData = {
-    title: titleInput.value.trim(),
-    chords: originalChords || chordsInput.value
-  };
+  title: titleInput.value.trim(),
+  chords: originalChords
+};
+
 
   if (selectedSongIndex === null) songs.push(songData);
   else songs[selectedSongIndex] = songData;
@@ -221,6 +209,7 @@ function loadSong(index) {
   currentTranspose = 0;
   updateKeyDisplay();
   renderSongList();
+  updateActionButtons();
 }
 
 cancelBtn.addEventListener("click", resetForm);
@@ -233,6 +222,7 @@ function resetForm() {
   detectedKey = "C";
   updateKeyDisplay();
   renderSongList();
+  updateActionButtons();
 }
 
 /* =====================
@@ -240,12 +230,16 @@ function resetForm() {
 ===================== */
 
 chordsInput.addEventListener("input", () => {
-  if (currentTranspose === 0) {
-    originalChords = chordsInput.value;
-    detectedKey = detectKey(originalChords);
-    updateKeyDisplay();
-  }
+  if (isApplyingTranspose) return;
+
+  // User edited manually → reset transpose
+  currentTranspose = 0;
+  originalChords = chordsInput.value;
+  detectedKey = detectKey(originalChords);
+
+  updateKeyDisplay();
 });
+
 
 /* =====================
    INIT
@@ -296,6 +290,7 @@ duplicateBtn.addEventListener("click", () => {
   localStorage.setItem("songs", JSON.stringify(songs));
 
   renderSongList();
+  updateActionButtons(); 
 });
 
 function updateActionButtons() {
@@ -312,4 +307,7 @@ addSongBtn.addEventListener("click", () => {
   titleInput.focus();
 });
 
+renderSongList();
+updateKeyDisplay();
+updateActionButtons();
 
