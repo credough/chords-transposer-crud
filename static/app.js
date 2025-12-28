@@ -2,8 +2,8 @@
    GLOBAL STATE
 ===================== */
 
-let songs = JSON.parse(localStorage.getItem("songs")) || [];
-let selectedSongIndex = null;
+let songs = [];
+let selectedSongId = null;   // 🔥 USE ID, NOT INDEX
 let currentTranspose = 0;
 let originalChords = "";
 let detectedKey = "C";
@@ -13,6 +13,7 @@ let isApplyingTranspose = false;
 /* =====================
    DOM ELEMENTS
 ===================== */
+
 const songListEl = document.getElementById("songs");
 const songForm = document.getElementById("songForm");
 const titleInput = document.getElementById("title");
@@ -21,6 +22,11 @@ const transposeUpBtn = document.getElementById("transposeUp");
 const transposeDownBtn = document.getElementById("transposeDown");
 const currentKeyEl = document.getElementById("currentKey");
 const cancelBtn = document.getElementById("cancelBtn");
+const deleteBtn = document.getElementById("deleteBtn");
+const duplicateBtn = document.getElementById("duplicateBtn");
+const addSongBtn = document.getElementById("addSongBtn");
+const searchInput = document.getElementById("search");
+
 
 /* =====================
    CHORD MAPS
@@ -39,29 +45,22 @@ const NOTE_INDEX = {
   B:11
 };
 
+
 /* =====================
    TRANSPOSER
 ===================== */
 
 function parseChord(chord) {
-  // Matches: C, Am7, Bbmaj7, G/B, Dbm7/F
   const match = chord.match(
     /^([A-G](?:#|b)?)([^/\s]*)(?:\/([A-G](?:#|b)?))?$/
   );
-
   if (!match) return null;
-
-  return {
-    root: match[1],
-    quality: match[2] || "",
-    bass: match[3] || null
-  };
+  return { root: match[1], quality: match[2] || "", bass: match[3] || null };
 }
 
 function transposeNote(note, steps, preferFlats = false) {
   const index = NOTE_INDEX[note];
   if (index === undefined) return note;
-
   const newIndex = (index + steps + 12) % 12;
   return preferFlats ? FLATS[newIndex] : SHARPS[newIndex];
 }
@@ -70,28 +69,24 @@ function transposeChord(chord, steps) {
   const parsed = parseChord(chord);
   if (!parsed) return chord;
 
-  const preferFlats = parsed.root.includes("b");
-
-  const newRoot = transposeNote(parsed.root, steps, preferFlats);
+  const newRoot = transposeNote(parsed.root, steps, parsed.root.includes("b"));
   let result = newRoot + parsed.quality;
 
   if (parsed.bass) {
-    const newBass = transposeNote(
-      parsed.bass,
-      steps,
-      parsed.bass.includes("b")
-    );
-    result += "/" + newBass;
+    result += "/" + transposeNote(parsed.bass, steps, parsed.bass.includes("b"));
   }
-
   return result;
 }
 
 function transposeText(text, steps) {
-  return text.replace(
-    /\b[A-G](?:#|b)?[^\s]*/g,
-    chord => transposeChord(chord, steps)
-  );
+  // Split text line by line
+  return text.split("\n").map(line => {
+    // Detect chord-only lines or lines starting with chords
+    return line.replace(
+      /\b([A-G](?:#|b)?(?:m|maj|min|dim|aug|sus|add)?\d*(?:\/[A-G](?:#|b)?)?)\b/g,
+      chord => transposeChord(chord, steps)
+    );
+  }).join("\n");
 }
 
 
@@ -101,14 +96,14 @@ function transposeText(text, steps) {
 ===================== */
 
 function detectKey(text) {
+  // Only look for chord-like words
   const matches = text.match(/\b[A-G](?:#|b)?\b/g);
   if (!matches) return "C";
-
   const counts = {};
   matches.forEach(n => counts[n] = (counts[n] || 0) + 1);
-
   return Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
 }
+
 
 function updateKeyDisplay() {
   const baseIndex = NOTE_INDEX[detectedKey] || 0;
@@ -116,198 +111,175 @@ function updateKeyDisplay() {
   currentKeyEl.textContent = `Key: ${SHARPS[finalIndex]}`;
 }
 
+
 /* =====================
    TRANSPOSE CONTROLS
 ===================== */
 
-transposeUpBtn.addEventListener("click", () => {
-  if (!originalChords) return;
+transposeUpBtn.onclick = () => applyTranspose(1);
+transposeDownBtn.onclick = () => applyTranspose(-1);
 
+function applyTranspose(step) {
+  if (!originalChords) return;
   isApplyingTranspose = true;
-  currentTranspose++;
+  currentTranspose += step;
   chordsInput.value = transposeText(originalChords, currentTranspose);
   updateKeyDisplay();
   isApplyingTranspose = false;
-});
-
-transposeDownBtn.addEventListener("click", () => {
-  if (!originalChords) return;
-
-  isApplyingTranspose = true;
-  currentTranspose--;
-  chordsInput.value = transposeText(originalChords, currentTranspose);
-  updateKeyDisplay();
-  isApplyingTranspose = false;
-});
+}
 
 
 /* =====================
    CRUD
 ===================== */
 
-songForm.addEventListener("submit", e => {
+songForm.onsubmit = async e => {
   e.preventDefault();
 
-  const songData = {
-  title: titleInput.value.trim(),
-  chords: originalChords
+  const payload = {
+    title: titleInput.value.trim(),
+    chords: chordsInput.value
+  };
+
+  if (!payload.title) return;
+
+  if (selectedSongId === null) {
+    await fetch("/api/songs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  } else {
+    await fetch(`/api/songs/${selectedSongId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  resetForm();
+  fetchSongs();
+};
+
+deleteBtn.onclick = async () => {
+  if (selectedSongId === null) return;
+  if (!confirm("Delete this song?")) return;
+
+  await fetch(`/api/songs/${selectedSongId}`, { method: "DELETE" });
+  resetForm();
+  fetchSongs();
+};
+
+duplicateBtn.onclick = async () => {
+  if (selectedSongId === null) return;
+  const song = songs.find(s => s.id === selectedSongId);
+
+  await fetch("/api/songs", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      title: song.title + " (Copy)",
+      chords: song.chords
+    })
+  });
+
+  fetchSongs();
 };
 
 
-  if (selectedSongIndex === null) songs.push(songData);
-  else songs[selectedSongIndex] = songData;
-
-  localStorage.setItem("songs", JSON.stringify(songs));
-  resetForm();
-  renderSongList();
-});
-
-/*----SEARCH SONG-----*/
-const searchInput = document.getElementById("search");
+/* =====================
+   UI HELPERS
+===================== */
 
 function renderSongList(filter = "") {
   songListEl.innerHTML = "";
-
   const query = filter.toLowerCase();
 
-  songs.forEach((song, index) => {
-    if (!song.title.toLowerCase().includes(query)) return;
+  songs
+    .filter(s => s.title.toLowerCase().includes(query))
+    .forEach(song => {
+      const li = document.createElement("li");
+      li.textContent = song.title;
+      if (song.id === selectedSongId) li.classList.add("active");
+      li.onclick = () => loadSong(song.id);
+      songListEl.appendChild(li);
+    });
 
-    const li = document.createElement("li");
-    li.textContent = song.title;
-
-    if (index === selectedSongIndex) {
-      li.classList.add("active");
-    }
-
-    li.onclick = () => loadSong(index);
-    songListEl.appendChild(li);
-  });
   if (!songListEl.children.length) {
-  const li = document.createElement("li");
-  li.textContent = "No songs found";
-  li.style.opacity = "0.6";
-  li.style.pointerEvents = "none";
-  songListEl.appendChild(li);
+    const li = document.createElement("li");
+    li.textContent = "No songs found";
+    li.style.opacity = "0.6";
+    songListEl.appendChild(li);
+  }
 }
 
-}
+function loadSong(id) {
+  const song = songs.find(s => s.id === id);
+  if (!song) return;
 
-searchInput.addEventListener("input", () => {
-  renderSongList(searchInput.value);
-});
+  selectedSongId = id;
+  titleInput.value = song.title;
+  chordsInput.value = song.chords;
 
-
-
-function loadSong(index) {
-  selectedSongIndex = index;
-  titleInput.value = songs[index].title;
-  chordsInput.value = songs[index].chords;
-
-  originalChords = songs[index].chords;
+  originalChords = song.chords;
   detectedKey = detectKey(originalChords);
   currentTranspose = 0;
+
   updateKeyDisplay();
-  renderSongList();
+  renderSongList(searchInput.value);
   updateActionButtons();
 }
-
-cancelBtn.addEventListener("click", resetForm);
 
 function resetForm() {
   songForm.reset();
-  selectedSongIndex = null;
-  currentTranspose = 0;
+  selectedSongId = null;
   originalChords = "";
   detectedKey = "C";
+  currentTranspose = 0;
   updateKeyDisplay();
-  renderSongList();
   updateActionButtons();
 }
 
+function updateActionButtons() {
+  const enabled = selectedSongId !== null;
+  deleteBtn.disabled = !enabled;
+  duplicateBtn.disabled = !enabled;
+}
+
+
 /* =====================
-   LIVE EDIT TRACKING
+   EVENTS
 ===================== */
 
-chordsInput.addEventListener("input", () => {
+chordsInput.oninput = () => {
   if (isApplyingTranspose) return;
-
-  // User edited manually → reset transpose
-  currentTranspose = 0;
   originalChords = chordsInput.value;
   detectedKey = detectKey(originalChords);
-
+  currentTranspose = 0;
   updateKeyDisplay();
-});
+};
+
+cancelBtn.onclick = resetForm;
+addSongBtn.onclick = () => { resetForm(); titleInput.focus(); };
+searchInput.oninput = () => renderSongList(searchInput.value);
+
+
+/* =====================
+   DATA FETCH
+===================== */
+
+async function fetchSongs() {
+  const res = await fetch("/api/songs");
+  songs = await res.json();
+  renderSongList(searchInput.value);
+  updateActionButtons();
+}
 
 
 /* =====================
    INIT
 ===================== */
-renderSongList();
-updateKeyDisplay();
 
-
-/* =====================
-   DELETE SONG
-===================== */
-
-const deleteBtn = document.getElementById("deleteBtn");
-const duplicateBtn = document.getElementById("duplicateBtn");
-
-deleteBtn.addEventListener("click", () => {
-  if (selectedSongIndex === null) return;
-
-  const confirmDelete = confirm(
-    `Delete "${songs[selectedSongIndex].title}"?`
-  );
-
-  if (!confirmDelete) return;
-
-  songs.splice(selectedSongIndex, 1);
-  localStorage.setItem("songs", JSON.stringify(songs));
-
-  resetForm();
-});
-
-
-
-/* =====================
-   DUPLICATE SONG
-===================== */
-
-duplicateBtn.addEventListener("click", () => {
-  if (selectedSongIndex === null) return;
-
-  const original = songs[selectedSongIndex];
-
-  const copy = {
-    title: original.title + " (Copy)",
-    chords: original.chords
-  };
-
-  songs.splice(selectedSongIndex + 1, 0, copy);
-  localStorage.setItem("songs", JSON.stringify(songs));
-
-  renderSongList();
-  updateActionButtons(); 
-});
-
-function updateActionButtons() {
-  const enabled = selectedSongIndex !== null;
-  deleteBtn.disabled = !enabled;
-  duplicateBtn.disabled = !enabled;
-}
-
-/*----ADD SONG-----*/
-const addSongBtn = document.getElementById("addSongBtn");
-
-addSongBtn.addEventListener("click", () => {
-  resetForm();
-  titleInput.focus();
-});
-
-renderSongList();
+fetchSongs();
 updateKeyDisplay();
 updateActionButtons();
-
