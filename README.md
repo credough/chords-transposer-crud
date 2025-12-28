@@ -26,24 +26,6 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 ### **Home**
 ![Home](homeB.jpg)
 
-### **About**
-![About](aboutB.jpg)
-
-### **Notes**
-![Notes](noteB.jpg)
-
-### **Write**
-![Write](writeB.jpg)
-
-### **Saved Notes**
-![Saved Notes](savedB.jpg)
-
-### **Queries**
-![Contacts](questionsB.jpg)
-
-### **Datas From Queries**
-![Sheets](sheetsB.png)
-
 ---
 
 ## Tech Stacks I used  
@@ -58,7 +40,7 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 <p> <img src="https://skillicons.dev/icons?i=sqlite" /> </p>
 
 **Deployment:** 
-![Render]([https://upload.wikimedia.org/wikipedia/commons/0/04/Render_Logo.png](https://assets.findstack.com/hf8tetz6wrjfxx6vxooc6igw3tah))
+![Render](https://logo.clearbit.com/render.com)
 
 ---
 
