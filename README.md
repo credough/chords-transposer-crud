@@ -18,10 +18,10 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 
 ---
 
-## Pages & Screenshots  
+## Page & Screenshot  
 
 ### **Home**
-![Home](homeB.jpg)
+![Home](ss.jpg)
 
 ---
 
