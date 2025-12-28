@@ -21,7 +21,7 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 ## Page & Screenshot  
 
 ### **Home**
-![Home](ss.jpg)
+![Home](ss.png)
 
 ---
 
