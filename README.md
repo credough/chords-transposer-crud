@@ -58,7 +58,7 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 <p> <img src="https://skillicons.dev/icons?i=sqlite" /> </p>
 
 **Deployment:** 
-![Render](https://upload.wikimedia.org/wikipedia/commons/0/04/Render_Logo.png)
+![Render]([https://upload.wikimedia.org/wikipedia/commons/0/04/Render_Logo.png](https://assets.findstack.com/hf8tetz6wrjfxx6vxooc6igw3tah))
 
 ---
 
