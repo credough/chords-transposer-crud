@@ -3,11 +3,9 @@
 </p>
 
 
-**iChords** is a simple CRUD web application for managing song lyrics with chords.
+**iChords** is a simple CRUD web application I built for managing song chords.
 
-It allows users to add, view, edit, delete, and duplicate songs, and includes a chord transposer that detects chords in a song and transposes them to a desired key.
-
-🔗 Live Demo: https://ichord.onrender.com
+It allows users to add, view, edit, delete, and duplicate songs, and includes a chord transposer that detects chords in a song and transposes them to a desired key. Deployed in Render.
 
 ---
 
@@ -17,7 +15,6 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 - Detect chords automatically within lyrics
 - Transpose chords to any key
 - Persistent storage with SQLite
-- Web app deployed online via Render
 
 ---
 
@@ -41,7 +38,7 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 
 ---
 
-## Getting Started
+## How to use?
 ### **1. Clone the repository**
 ```
 git clone https://github.com/credough/iChords.git
@@ -64,6 +61,8 @@ flask run
 ```
 http://127.0.0.1:5000
 ```
+
+🔗 Live Demo: https://ichord.onrender.com
 
 ## Future Improvements
 - Support for slash chords (e.g., C/G, D/F#)
