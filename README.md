@@ -39,9 +39,6 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 **Database:** 
 <p> <img src="https://skillicons.dev/icons?i=sqlite" /> </p>
 
-**Deployment:** 
-![Render](https://logo.clearbit.com/render.com)
-
 ---
 
 ## Getting Started
