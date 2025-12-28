@@ -41,8 +41,8 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 ## How to use?
 ### **1. Clone the repository**
 ```
-git clone https://github.com/credough/iChords.git
-cd iChords
+git clone https://github.com/credough/ichords.git
+cd ichords
 ```
 ### **2. Create a virtual environment**
 ```
