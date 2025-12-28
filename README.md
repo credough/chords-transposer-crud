@@ -1,12 +1,11 @@
 <p align="center">
-  <img src="../static/design/logo.png" alt="iChords Logo" width="150"/>
+  <img src="static/design/logo.png" alt="iChords Logo" width="200"/>
 </p>
 
 
-**iChords** is a simple CRUD web application for managing song lyrics with chords.
+**iChords** is a simple CRUD web application I built for managing song chords.
 
-It allows users to add, view, edit, delete, and duplicate songs, and includes a chord transposer that detects chords in a song and transposes them to a desired key.
-🔗 Live Demo: https://ichord.onrender.com
+It allows users to add, view, edit, delete, and duplicate songs, and includes a chord transposer that detects chords in a song and transposes them to a desired key. Deployed in Render.
 
 ---
 
@@ -16,32 +15,13 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 - Detect chords automatically within lyrics
 - Transpose chords to any key
 - Persistent storage with SQLite
-- Web app deployed online via Render
 
 ---
 
-## Pages & Screenshots  
+## Page & Screenshot  
 
 ### **Home**
-![Home](homeB.jpg)
-
-### **About**
-![About](aboutB.jpg)
-
-### **Notes**
-![Notes](noteB.jpg)
-
-### **Write**
-![Write](writeB.jpg)
-
-### **Saved Notes**
-![Saved Notes](savedB.jpg)
-
-### **Queries**
-![Contacts](questionsB.jpg)
-
-### **Datas From Queries**
-![Sheets](sheetsB.png)
+![Home](ss.png)
 
 ---
 
@@ -56,12 +36,9 @@ It allows users to add, view, edit, delete, and duplicate songs, and includes a 
 **Database:** 
 <p> <img src="https://skillicons.dev/icons?i=sqlite" /> </p>
 
-**Deployment:** 
-<p> <img src="https://skillicons.dev/icons?i=render" /> </p>
-
 ---
 
-## Getting Started
+## How to use?
 ### **1. Clone the repository**
 ```
 git clone https://github.com/credough/iChords.git
@@ -84,6 +61,8 @@ flask run
 ```
 http://127.0.0.1:5000
 ```
+
+🔗 Live Demo: https://ichord.onrender.com
 
 ## Future Improvements
 - Support for slash chords (e.g., C/G, D/F#)
