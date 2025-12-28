@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iChords</title>
-    <link rel="icon" href="design/favicon2.png" type="image/x-icon">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='design/favicon2.png') }}">
     <!-- Fonts -->
     <link href="style.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -17,7 +17,7 @@
     <!-- NAVBAR -->
     <header class="navbar">
         <div class="logo-section">
-            <img src="design/logo.png" alt="iChords Logo" class="logo">
+            <img src="{{ url_for('static', filename='design/logo.png') }}" alt="iChords Logo" class="logo">
         </div>
 
         <ul class="nav-links">
@@ -83,6 +83,26 @@
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <footer class="app-footer">
+  <div class="footer-content">
+    <div class="social-icons">
+      <a href="https://www.linkedin.com/in/celindro-aaron-creed-p-720293358/" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn">
+      </a>
+      <a href="https://github.com/credough" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub">
+      </a>
+      <a href="https://www.facebook.com/aaron.celindro.73" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+      </a>
+    </div>
+    <div class="footer-text">
+      &copy; 2025 All rights reserved. Developed by Credo
+    </div>
+  </div>
+</footer>
+
 
 </body>
 </html>
