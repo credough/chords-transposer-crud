@@ -6,6 +6,7 @@
 **iChords** is a simple CRUD web application for managing song lyrics with chords.
 
 It allows users to add, view, edit, delete, and duplicate songs, and includes a chord transposer that detects chords in a song and transposes them to a desired key.
+
 🔗 Live Demo: https://ichord.onrender.com
 
 ---
