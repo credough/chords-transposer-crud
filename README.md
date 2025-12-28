@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="static/design/logo.png" alt="iChords Logo" width="150"/>
+  <img src="static/design/logo.png" alt="iChords Logo" width="200"/>
 </p>
 
 
